@@ -36,11 +36,11 @@ namespace Player
         {
             FollowPath();
 
-            if (_canMove)
-            {
-                UpdateHorizontalInput();
-                Move();
-            }
+            if (!_canMove) 
+                return;
+            
+            UpdateHorizontalInput();
+            Move();
         }
 
         private void UpdateHorizontalInput()
@@ -49,8 +49,6 @@ namespace Player
 
             if (horizontalInput != 0)
                 _cashedHorizontalInput = horizontalInput;
-            
-            print("upd");
         }
 
         private void FollowPath()
