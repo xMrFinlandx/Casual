@@ -14,12 +14,15 @@ namespace Player
 
         private float _cashedHorizontalInput;
         private float _travelledDistance;
+        private float _currentOffsetX;
+        
         private bool _canMove;
-
+        
         private void Start()
         {
             _inputReader.MouseEventPerfomed += OnMousePerfomed;
             _inputReader.MouseCancelledEvent += OnMouseCancelled;
+            _currentOffsetX = 0f;
         }
 
         private void OnMouseCancelled()
@@ -36,10 +39,11 @@ namespace Player
         {
             FollowPath();
 
-            if (!_canMove) 
+            if (!_canMove)
                 return;
-            
+
             UpdateHorizontalInput();
+
             Move();
         }
 
@@ -57,17 +61,19 @@ namespace Player
             transform.position = _pathCreator.path.GetPointAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
             transform.rotation = _pathCreator.path.GetRotationAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
             transform.eulerAngles += new Vector3(0, 0, _rotationOffset);
+            
+            var worldOffset = transform.TransformDirection(new Vector3(_currentOffsetX, 0, 0));
+            transform.position += worldOffset;
         }
 
         private void Move()
         {
             var halfScreen = Screen.width / 2;
-            var x = Mathf.Clamp((_cashedHorizontalInput - halfScreen) / halfScreen * _limitValue,-_limitValue,_limitValue);
-            var worldOffset = transform.TransformDirection(new Vector3(x, 0, 0));
+            var x = Mathf.Clamp((_cashedHorizontalInput - halfScreen) / halfScreen * _limitValue, -_limitValue, _limitValue);
             
-            transform.position += worldOffset;
+            _currentOffsetX = x;
         }
-
+        
         private void OnDisable()
         {
             _inputReader.MouseEventPerfomed -= OnMousePerfomed;

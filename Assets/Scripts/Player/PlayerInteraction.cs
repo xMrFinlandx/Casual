@@ -18,8 +18,8 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<ICollectable>(out var collectable))
-                collectable.Collect(_wallet);
+            if (other.TryGetComponent<IInteractable>(out var collectable))
+                collectable.Interact(_wallet);
         }
     }
 }

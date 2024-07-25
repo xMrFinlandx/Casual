@@ -1,4 +1,5 @@
-﻿using Gameplay;
+﻿using DG.Tweening;
+using Gameplay;
 using Player;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,9 +23,9 @@ namespace UI
 
         private void OnBalanceChanged(int current, int added)
         {
-            var amount = (float) current / LevelGoalManager.Instance.Goal;
-            _fillImage.fillAmount = amount;
-            _fillImage.color = _gradient.Evaluate(amount);
+            var amount = (float)current / LevelGoalManager.Instance.Goal;
+            DOTween.To(() => _fillImage.fillAmount, x => _fillImage.fillAmount = x, amount, .2f)
+                .OnUpdate(() => _fillImage.color = _gradient.Evaluate(_fillImage.fillAmount));
         }
 
         private void OnDestroy()

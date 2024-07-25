@@ -3,11 +3,11 @@ using Utilities;
 
 namespace Gameplay
 {
-    public class Collectable : MonoBehaviour, ICollectable
+    public class Collectable : MonoBehaviour, IInteractable
     {
         [SerializeField] private int _amount;
         
-        public void Collect(Wallet wallet)
+        public void Interact(Wallet wallet)
         {
             wallet.Add(_amount);
             Destroy(gameObject);
