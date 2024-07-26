@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Utilities;
 using Zenject;
 
@@ -19,7 +20,17 @@ namespace Player
         {
             _wallet = new Wallet(_initialBalance);
         }
-        
+
+        private void Start()
+        {
+            _wallet.BalanceIsZeroAction += OnBalanceIsZero;
+        }
+
+        private void OnBalanceIsZero()
+        {
+            _playerController.SetLose();
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<IInteractable>(out var collectable))
@@ -27,6 +38,11 @@ namespace Player
                 print(_wallet == null);
                 collectable.Interact(_wallet);
             }
+        }
+
+        private void OnDestroy()
+        {
+            _wallet.BalanceIsZeroAction -= OnBalanceIsZero;
         }
     }
 }

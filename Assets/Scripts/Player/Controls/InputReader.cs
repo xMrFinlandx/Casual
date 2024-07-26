@@ -9,7 +9,7 @@ namespace Player.Controls
     {
         private GameControls _gameControls;
 
-        public event Action MouseEventPerfomed;
+        public event Action MousePerfomedEvent;
         public event Action MouseCancelledEvent;
         public Vector2 MousePosition => _gameControls.Gameplay.MousePosition.ReadValue<Vector2>();
         
@@ -41,7 +41,7 @@ namespace Player.Controls
         public void OnMouse(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
-                MouseEventPerfomed?.Invoke();
+                MousePerfomedEvent?.Invoke();
 
             if (context.phase == InputActionPhase.Canceled)
                 MouseCancelledEvent?.Invoke();

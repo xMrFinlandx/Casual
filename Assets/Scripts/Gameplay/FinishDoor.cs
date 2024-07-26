@@ -26,7 +26,7 @@ namespace Gameplay
         {
             if (_minCoinsAmount > wallet.Balance)
             {
-                _playerController.Stop();
+                _playerController.SetWin();
             }
             else
             {

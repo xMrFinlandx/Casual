@@ -1,6 +1,8 @@
 using PathCreation;
 using Player.Controls;
+using Player.States;
 using UnityEngine;
+using Utilities.FSM;
 using Zenject;
 
 namespace Player
@@ -14,13 +16,11 @@ namespace Player
         [SerializeField] private Animator _animator;
 
         private VertexPath _path;
+        private FiniteStateMachine _finiteStateMachine = new();
         
-        private float _cashedHorizontalInput;
         private float _travelledDistance;
-        private float _currentOffsetX;
 
-        private bool _isGameStopped;
-        private bool _isPaused = true;
+        private bool _isStarted = false;
         private bool _canMove;
 
         [Inject]
@@ -31,75 +31,45 @@ namespace Player
 
         private void Start()
         {
-            _inputReader.MouseEventPerfomed += OnMousePerfomed;
-            _inputReader.MouseCancelledEvent += OnMouseCancelled;
+            _inputReader.MousePerfomedEvent += OnMousePerfomed;
             
-            _animator.Play("idle");
-        }
+            _finiteStateMachine.Add(new IdleState(_finiteStateMachine, _animator, Animator.StringToHash("idle")));
+            _finiteStateMachine.Add(new WalkState(_finiteStateMachine, transform, _path, _animator, _inputReader, _speed, _rotationOffset, _limitValue, Animator.StringToHash("walk")));
+            _finiteStateMachine.Add(new WinState(_finiteStateMachine, _animator, Animator.StringToHash("victory")));
+            _finiteStateMachine.Add(new LoseState(_finiteStateMachine, _animator, Animator.StringToHash("lose")));
 
-        private void OnMouseCancelled()
-        {
-            _canMove = false;
+            _finiteStateMachine.Set<IdleState>();
         }
+        
 
         private void OnMousePerfomed()
         {
-            _canMove = true;
+            if (_isStarted)
+                return;
             
-            _isPaused = false;
-            _animator.Play("walk");
+            _isStarted = true;
+            _finiteStateMachine.Set<WalkState>();
         }
 
         private void Update()
         {
-            if (_isGameStopped || _isPaused)
-                return;
-            
-            FollowPath();
-
-            if (!_canMove)
-                return;
-
-            UpdateHorizontalInput();
-            UpdateXOffset();
-        }
-
-        private void UpdateHorizontalInput()
-        {
-            var horizontalInput = _inputReader.MousePosition.x;
-
-            if (horizontalInput != 0)
-                _cashedHorizontalInput = horizontalInput;
-        }
-
-        private void FollowPath()
-        {
-            _travelledDistance += _speed * Time.deltaTime;
-            transform.position = _path.GetPointAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
-            transform.rotation = _path.GetRotationAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
-            transform.eulerAngles += new Vector3(0, 0, _rotationOffset);
-            
-            var worldOffset = transform.TransformDirection(new Vector3(_currentOffsetX, 0, 0));
-            transform.position += worldOffset;
-        }
-
-        private void UpdateXOffset()
-        {
-            var halfScreen = Screen.width / 2;
-            var x = Mathf.Clamp((_cashedHorizontalInput - halfScreen) / halfScreen * _limitValue, -_limitValue, _limitValue);
-            
-            _currentOffsetX = x;
+            _finiteStateMachine.Update();
         }
         
         private void OnDisable()
         {
-            _inputReader.MouseEventPerfomed -= OnMousePerfomed;
-            _inputReader.MouseCancelledEvent -= OnMouseCancelled;
+            _inputReader.MousePerfomedEvent -= OnMousePerfomed;
+            _finiteStateMachine.Dispose();
         }
 
-        public void Stop()
+        public void SetWin()
         {
-            _isGameStopped = true;
+            _finiteStateMachine.Set<WinState>();
+        }
+
+        public void SetLose()
+        {
+            _finiteStateMachine.Set<LoseState>();
         }
     }
 }
