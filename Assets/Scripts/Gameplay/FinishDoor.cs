@@ -10,10 +10,12 @@ namespace Gameplay
     {
         [SerializeField] private float _rotationDegree = 120;
         [SerializeField] private float _rotationDuration = .3f;
-        [SerializeField] private int _minCoinsAmount;
+        [SerializeField] private int _targetCoinsAmount;
         [SerializeField] private Transform _leftDoor;
         [SerializeField] private Transform _rightDoor;
 
+        public int TargetCoinsAmount => _targetCoinsAmount;
+        
         private PlayerController _playerController;
         
         [Inject]
@@ -30,7 +32,7 @@ namespace Gameplay
                 return;
             }
 
-            if (_minCoinsAmount > wallet.Balance)
+            if (_targetCoinsAmount > wallet.Balance)
             {
                 _playerController.SetWin();
             }

@@ -4793,7 +4793,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.75, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 30, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10454,6 +10454,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 262305659}
     m_Modifications:
+    - target: {fileID: 4631228790073675298, guid: acd6306e3de9c424aa2ea13e99f041a2,
+        type: 3}
+      propertyPath: _targetCoinsAmount
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 5498712396210142197, guid: acd6306e3de9c424aa2ea13e99f041a2,
         type: 3}
       propertyPath: m_Name
@@ -10650,6 +10655,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right Door
       objectReference: {fileID: 0}
+    - target: {fileID: 3410127541568143749, guid: eb3f770deedb2304a93978041614932d,
+        type: 3}
+      propertyPath: _targetCoinsAmount
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4858975910423794757, guid: eb3f770deedb2304a93978041614932d,
         type: 3}
       propertyPath: m_Name
@@ -10741,6 +10751,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 262305659}
     m_Modifications:
+    - target: {fileID: 4272513958842542756, guid: 20c8794120e9455448cb6b8257b6dd30,
+        type: 3}
+      propertyPath: _targetCoinsAmount
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 5533404308837294816, guid: 20c8794120e9455448cb6b8257b6dd30,
         type: 3}
       propertyPath: m_Name
@@ -10813,6 +10828,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Million Finish Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002838304337999481, guid: e1eb1f5a1432fb44caf19e85c1159430,
+        type: 3}
+      propertyPath: _targetCoinsAmount
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 6168973992123924368, guid: e1eb1f5a1432fb44caf19e85c1159430,
         type: 3}
