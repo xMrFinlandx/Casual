@@ -11,13 +11,16 @@ namespace Player
         [SerializeField] private float _rotationOffset;
         [SerializeField] private float _limitValue;
         [SerializeField] private InputReader _inputReader;
+        [SerializeField] private Animator _animator;
 
         private VertexPath _path;
         
         private float _cashedHorizontalInput;
         private float _travelledDistance;
         private float _currentOffsetX;
-        
+
+        private bool _isGameStopped;
+        private bool _isPaused = true;
         private bool _canMove;
 
         [Inject]
@@ -30,7 +33,8 @@ namespace Player
         {
             _inputReader.MouseEventPerfomed += OnMousePerfomed;
             _inputReader.MouseCancelledEvent += OnMouseCancelled;
-            _currentOffsetX = 0f;
+            
+            _animator.Play("idle");
         }
 
         private void OnMouseCancelled()
@@ -41,18 +45,23 @@ namespace Player
         private void OnMousePerfomed()
         {
             _canMove = true;
+            
+            _isPaused = false;
+            _animator.Play("walk");
         }
 
         private void Update()
         {
+            if (_isGameStopped || _isPaused)
+                return;
+            
             FollowPath();
 
             if (!_canMove)
                 return;
 
             UpdateHorizontalInput();
-
-            Move();
+            UpdateXOffset();
         }
 
         private void UpdateHorizontalInput()
@@ -74,7 +83,7 @@ namespace Player
             transform.position += worldOffset;
         }
 
-        private void Move()
+        private void UpdateXOffset()
         {
             var halfScreen = Screen.width / 2;
             var x = Mathf.Clamp((_cashedHorizontalInput - halfScreen) / halfScreen * _limitValue, -_limitValue, _limitValue);
@@ -86,6 +95,11 @@ namespace Player
         {
             _inputReader.MouseEventPerfomed -= OnMousePerfomed;
             _inputReader.MouseCancelledEvent -= OnMouseCancelled;
+        }
+
+        public void Stop()
+        {
+            _isGameStopped = true;
         }
     }
 }

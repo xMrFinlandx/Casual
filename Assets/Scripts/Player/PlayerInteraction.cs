@@ -6,10 +6,12 @@ namespace Player
 {
     public class PlayerInteraction : MonoBehaviour
     {
+        [SerializeField] private PlayerController _playerController;
         [SerializeField] private int _initialBalance = 40;
 
         private Wallet _wallet;
-
+        
+        public PlayerController PlayerController => _playerController;
         public IWallet Wallet => _wallet;
 
         [Inject]

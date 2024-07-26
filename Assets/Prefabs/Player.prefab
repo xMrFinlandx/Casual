@@ -102,6 +102,7 @@ MonoBehaviour:
   _rotationOffset: 90
   _limitValue: 1.5
   _inputReader: {fileID: 11400000, guid: 667adf85b4df29446ad842f4cfa3b3e2, type: 2}
+  _animator: {fileID: 532130420237852696}
 --- !u!114 &7965904826104286794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84da5108bdf442b18ada96d4f721d805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerController: {fileID: 3300317323562959077}
   _initialBalance: 40
 --- !u!1001 &6099998712725637891
 PrefabInstance:

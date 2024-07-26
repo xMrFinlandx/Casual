@@ -14,7 +14,7 @@ namespace Installers
         public override void InstallBindings()
         {
             Container.Bind<PathCreator>().FromInstance(_pathCreator);
-            var playerInstance = Container.InstantiatePrefabForComponent<PlayerInteraction>(_player);
+            var playerInstance = Container.InstantiatePrefabForComponent<PlayerInteraction>(_player, _pathCreator.path.GetPointAtTime(0), Quaternion.identity, null);
             Container.Bind<PlayerInteraction>().FromInstance(playerInstance).AsSingle();
             Container.Bind<IWallet>().FromInstance(playerInstance.Wallet).AsSingle();
         }
