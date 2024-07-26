@@ -16,7 +16,7 @@ namespace Gameplay
         [SerializeField] private Door[] _linked;
 
         private int _pointsAmount;
-
+        
         private void OnValidate()
         {
             if (_doorConfig == null)

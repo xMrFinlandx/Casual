@@ -1,23 +1,31 @@
 using PathCreation;
 using Player.Controls;
 using UnityEngine;
+using Zenject;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
-    {
-        [SerializeField] private PathCreator _pathCreator;
+    { 
         [SerializeField] private float _speed;
         [SerializeField] private float _rotationOffset;
         [SerializeField] private float _limitValue;
         [SerializeField] private InputReader _inputReader;
 
+        private VertexPath _path;
+        
         private float _cashedHorizontalInput;
         private float _travelledDistance;
         private float _currentOffsetX;
         
         private bool _canMove;
-        
+
+        [Inject]
+        private void Construct(PathCreator pathCreator)
+        {
+            _path = pathCreator.path;
+        }
+
         private void Start()
         {
             _inputReader.MouseEventPerfomed += OnMousePerfomed;
@@ -58,8 +66,8 @@ namespace Player
         private void FollowPath()
         {
             _travelledDistance += _speed * Time.deltaTime;
-            transform.position = _pathCreator.path.GetPointAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
-            transform.rotation = _pathCreator.path.GetRotationAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
+            transform.position = _path.GetPointAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
+            transform.rotation = _path.GetRotationAtDistance(_travelledDistance, EndOfPathInstruction.Stop);
             transform.eulerAngles += new Vector3(0, 0, _rotationOffset);
             
             var worldOffset = transform.TransformDirection(new Vector3(_currentOffsetX, 0, 0));

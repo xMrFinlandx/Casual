@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace Player
 {
     public class CameraHolder : MonoBehaviour
     {
-        [SerializeField] private Transform _target;
-
+        private Transform _target;
         private Vector3 _initialRotation;
+
+        [Inject]
+        private void Construct(PlayerInteraction player)
+        {
+            _target = player.transform;
+        }
 
         private void Awake()
         {

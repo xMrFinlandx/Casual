@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Utilities;
+using Zenject;
 
 namespace Player
 {
@@ -10,16 +11,20 @@ namespace Player
         private Wallet _wallet;
 
         public IWallet Wallet => _wallet;
-        
-        private void Awake()
+
+        [Inject]
+        private void Construct()
         {
             _wallet = new Wallet(_initialBalance);
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<IInteractable>(out var collectable))
+            {
+                print(_wallet == null);
                 collectable.Interact(_wallet);
+            }
         }
     }
 }
