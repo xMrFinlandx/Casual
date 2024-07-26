@@ -32,6 +32,18 @@ namespace Player
         {
             _path = pathCreator.path;
         }
+        
+        public void SetWin()
+        {
+            _finiteStateMachine.Set<WinState>();
+            GameEndedAction?.Invoke(true);
+        }
+
+        public void SetLose()
+        {
+            _finiteStateMachine.Set<LoseState>();
+            GameEndedAction?.Invoke(false);
+        }
 
         private void Start()
         {
@@ -65,18 +77,6 @@ namespace Player
         {
             _inputReader.MousePerfomedEvent -= OnMousePerfomed;
             _finiteStateMachine.Dispose();
-        }
-
-        public void SetWin()
-        {
-            _finiteStateMachine.Set<WinState>();
-            GameEndedAction?.Invoke(true);
-        }
-
-        public void SetLose()
-        {
-            _finiteStateMachine.Set<LoseState>();
-            GameEndedAction?.Invoke(false);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Scriptables.Gates;
+﻿using Scriptables.Gates;
 using TMPro;
 using UnityEngine;
 using Utilities;
@@ -17,6 +16,18 @@ namespace Gameplay
 
         private int _pointsAmount;
         
+        public void Interact(Wallet wallet)
+        {
+            wallet.Add(_pointsAmount);
+            
+            foreach (var door in _linked)
+            {
+                door._collider.enabled = false;
+            }
+
+            _collider.enabled = false;
+        }
+        
         private void OnValidate()
         {
             if (_doorConfig == null)
@@ -31,18 +42,6 @@ namespace Gameplay
         private void Start()
         {
             _collider.enabled = true;
-        }
-
-        public void Interact(Wallet wallet)
-        {
-            wallet.Add(_pointsAmount);
-            
-            foreach (var door in _linked)
-            {
-                door._collider.enabled = false;
-            }
-
-            _collider.enabled = false;
         }
     }
 }

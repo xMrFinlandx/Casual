@@ -43,13 +43,13 @@ namespace UI
             }
         }
 
-        private void ReloadScene()
+        private static void ReloadScene()
         {
             var index = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadSceneAsync(index);
         }
 
-        private void LoadNextScene()
+        private static void LoadNextScene()
         {
             var index = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadSceneAsync(index + 1);

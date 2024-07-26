@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 using Zenject;
 
@@ -33,11 +32,10 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IInteractable>(out var collectable))
-            {
-                print(_wallet == null);
-                collectable.Interact(_wallet);
-            }
+            if (!other.TryGetComponent<IInteractable>(out var collectable)) 
+                return;
+
+            collectable.Interact(_wallet);
         }
 
         private void OnDestroy()
