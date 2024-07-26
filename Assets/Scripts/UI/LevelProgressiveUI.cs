@@ -11,6 +11,7 @@ namespace UI
 {
     public class LevelProgressiveUI : MonoBehaviour
     {
+        [SerializeField] private Transform _child;
         [SerializeField] private Gradient _gradient;
         [SerializeField] private Image _fillImage;
         [SerializeField] private TextMeshProUGUI _textMesh;
@@ -27,10 +28,17 @@ namespace UI
         
         private void Start()
         {
+            PlayerController.GameStartedAction += OnGameStarted;
+            _child.gameObject.SetActive(false);
+        }
+
+        private void OnGameStarted()
+        {
+            _child.gameObject.SetActive(true);
             _wallet.BalanceChangedAction += OnBalanceChanged;
             OnBalanceChanged(_wallet.Balance, 0);
         }
-        
+
         private void OnBalanceChanged(int current, int added)
         {
             var amount = (float)current / LevelGoalManager.Instance.Goal;
@@ -43,6 +51,7 @@ namespace UI
         private void OnDestroy()
         {
             _wallet.BalanceChangedAction -= OnBalanceChanged;
+            PlayerController.GameStartedAction -= OnGameStarted;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using PathCreation;
 using Player.Controls;
 using Player.States;
@@ -15,8 +16,11 @@ namespace Player
         [SerializeField] private InputReader _inputReader;
         [SerializeField] private Animator _animator;
 
+        public static event Action<bool> GameEndedAction; 
+        public static event Action GameStartedAction; 
+        
+        private readonly FiniteStateMachine _finiteStateMachine = new();
         private VertexPath _path;
-        private FiniteStateMachine _finiteStateMachine = new();
         
         private float _travelledDistance;
 
@@ -47,6 +51,7 @@ namespace Player
             if (_isStarted)
                 return;
             
+            GameStartedAction?.Invoke();
             _isStarted = true;
             _finiteStateMachine.Set<WalkState>();
         }
@@ -65,11 +70,13 @@ namespace Player
         public void SetWin()
         {
             _finiteStateMachine.Set<WinState>();
+            GameEndedAction?.Invoke(true);
         }
 
         public void SetLose()
         {
             _finiteStateMachine.Set<LoseState>();
+            GameEndedAction?.Invoke(false);
         }
     }
 }

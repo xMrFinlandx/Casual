@@ -24,6 +24,12 @@ namespace Gameplay
 
         public void Interact(Wallet wallet)
         {
+            if (wallet.Balance < LevelGoalManager.Instance.MinValue)
+            {
+                _playerController.SetLose();
+                return;
+            }
+
             if (_minCoinsAmount > wallet.Balance)
             {
                 _playerController.SetWin();

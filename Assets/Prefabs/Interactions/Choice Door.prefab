@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 4967925454701017904}
   - component: {fileID: 6271443845545306597}
   m_Layer: 3
-  m_Name: Door
+  m_Name: Choice Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

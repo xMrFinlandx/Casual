@@ -32,12 +32,13 @@ namespace Utilities
 
         public void Spend(int amount)
         {
-            if (Balance - amount < 0)
+            if (Balance - amount <= 0)
             {
                 BalanceIsZeroAction?.Invoke();
             }
 
             Balance -= amount;
+            Balance = Math.Clamp(Balance, 0, int.MaxValue);
             BalanceChangedAction?.Invoke(Balance, -amount);
         }
     }
